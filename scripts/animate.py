@@ -17,7 +17,7 @@ from animatediff.models.unet import UNet3DConditionModel
 from animatediff.models.sparse_controlnet import SparseControlNetModel
 from animatediff.pipelines.pipeline_animation import AnimationPipeline
 from animatediff.utils.util import save_videos_grid
-from animatediff.utils.util import load_weights, auto_download
+from animatediff.utils.util import load_weights, auto_download, safe_enable_xformers
 from diffusers.utils.import_utils import is_xformers_available
 
 from einops import rearrange, repeat
@@ -115,8 +115,9 @@ def main(args):
 
         # set xformers
         if is_xformers_available() and (not args.without_xformers):
-            unet.enable_xformers_memory_efficient_attention()
-            if controlnet is not None: controlnet.enable_xformers_memory_efficient_attention()
+            safe_enable_xformers(unet, "unet")
+            if controlnet is not None:
+                safe_enable_xformers(controlnet, "controlnet")
 
         pipeline = AnimationPipeline(
             vae=vae, text_encoder=text_encoder, tokenizer=tokenizer, unet=unet,

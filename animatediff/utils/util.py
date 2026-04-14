@@ -58,6 +58,15 @@ def zero_rank_print(s):
     if (not dist.is_initialized()) and (dist.is_initialized() and dist.get_rank() == 0): print("### " + s)
 
 
+def safe_enable_xformers(module, module_name: str = "module") -> bool:
+    try:
+        module.enable_xformers_memory_efficient_attention()
+        return True
+    except Exception as exc:
+        print(f"warning: could not enable xformers for {module_name}: {exc}")
+        return False
+
+
 def save_videos_grid(videos: torch.Tensor, path: str, rescale=False, n_rows=6, fps=8):
     videos = rearrange(videos, "b c t h w -> t b c h w")
     outputs = []

@@ -37,7 +37,7 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from animatediff.data.dataset import WebVid10M
 from animatediff.models.unet import UNet3DConditionModel
 from animatediff.pipelines.pipeline_animation import AnimationPipeline
-from animatediff.utils.util import save_videos_grid, zero_rank_print
+from animatediff.utils.util import save_videos_grid, zero_rank_print, safe_enable_xformers
 
 
 
@@ -213,7 +213,7 @@ def main(
     # Enable xformers
     if enable_xformers_memory_efficient_attention:
         if is_xformers_available():
-            unet.enable_xformers_memory_efficient_attention()
+            safe_enable_xformers(unet, "unet")
         else:
             raise ValueError("xformers is not available. Make sure it is installed correctly")
 

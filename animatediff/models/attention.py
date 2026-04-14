@@ -8,10 +8,11 @@ import torch.nn.functional as F
 from torch import nn
 
 from diffusers.configuration_utils import ConfigMixin, register_to_config
-from diffusers.modeling_utils import ModelMixin
+from diffusers.models.modeling_utils import ModelMixin
 from diffusers.utils import BaseOutput
 from diffusers.utils.import_utils import is_xformers_available
-from diffusers.models.attention import CrossAttention, FeedForward, AdaLayerNorm
+from diffusers.models.attention import FeedForward, AdaLayerNorm
+from diffusers.models.attention_processor import Attention
 
 from einops import rearrange, repeat
 import pdb
@@ -178,7 +179,7 @@ class BasicTransformerBlock(nn.Module):
                 upcast_attention=upcast_attention,
             )
         else:
-            self.attn1 = CrossAttention(
+            self.attn1 = Attention(
                 query_dim=dim,
                 heads=num_attention_heads,
                 dim_head=attention_head_dim,
@@ -190,7 +191,7 @@ class BasicTransformerBlock(nn.Module):
 
         # Cross-Attn
         if cross_attention_dim is not None:
-            self.attn2 = CrossAttention(
+            self.attn2 = Attention(
                 query_dim=dim,
                 cross_attention_dim=cross_attention_dim,
                 heads=num_attention_heads,
@@ -214,7 +215,7 @@ class BasicTransformerBlock(nn.Module):
         # Temp-Attn
         assert unet_use_temporal_attention is not None
         if unet_use_temporal_attention:
-            self.attn_temp = CrossAttention(
+            self.attn_temp = Attention(
                 query_dim=dim,
                 heads=num_attention_heads,
                 dim_head=attention_head_dim,

@@ -1,0 +1,60 @@
+models:
+  pretrained_model_path: "runwayml/stable-diffusion-v1-5"
+  inference_config: "configs/inference/inference-v3.yaml"
+  motion_module: "models/Motion_Module/v3_sd15_mm.ckpt"
+  dreambooth_path: ""
+  lora_model_path: ""
+  lora_alpha: 0.8
+  adapter_lora_path: ""
+  adapter_lora_scale: 1.0
+  controlnet_path: ""
+  controlnet_config: ""
+  without_xformers: false
+
+scene:
+  key: "sunset-overlook"
+  image_path: "__assets__/demos/image/RealisticVision_sunset.png"
+  cache_dir: "samples/location_scene_cache"
+  regenerate: false
+
+foreground:
+  prompt: "42 year old bald man in black clothes, walking toward camera"
+  negative_prompt: "environment, scenery, furniture, landscape, duplicate person, cropped body, extra limbs"
+  auto_isolate_subject: true
+  background_color: "green"
+  seed: 8893659352891878017
+  steps: 25
+  guidance_scale: 8.0
+  width: 512
+  height: 512
+  length: 16
+  frames_path: ""
+  masks_path: ""
+  controlnet_image_indexs: [0]
+
+composite:
+  fps: 8
+  loop_foreground: true
+  total_frames: 16
+  placement:
+    anchor_x: 0.55
+    ground_y: 0.96
+    height_fraction: 0.62
+  mask:
+    mode: "chroma_key"
+    key_color: [0, 255, 0]
+    threshold: 60
+    blur_radius: 2
+    invert: false
+  shadow:
+    enabled: true
+    opacity: 0.28
+    blur_radius: 12
+    offset_x: 6
+    offset_y: 10
+    scale: 1.04
+
+outputs:
+  dir: "samples/location_composite_demo"
+  video_filename: "composite.mp4"
+  gif_filename: "composite.gif"

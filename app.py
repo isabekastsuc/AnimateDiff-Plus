@@ -17,7 +17,7 @@ from transformers import CLIPTextModel, CLIPTokenizer
 
 from animatediff.models.unet import UNet3DConditionModel
 from animatediff.pipelines.pipeline_animation import AnimationPipeline
-from animatediff.utils.util import save_videos_grid, load_weights, auto_download, MOTION_MODULES, BACKUP_DREAMBOOTH_MODELS
+from animatediff.utils.util import save_videos_grid, load_weights, auto_download, MOTION_MODULES, BACKUP_DREAMBOOTH_MODELS, safe_enable_xformers
 from animatediff.utils.convert_from_ckpt import convert_ldm_unet_checkpoint, convert_ldm_clip_checkpoint, convert_ldm_vae_checkpoint
 from animatediff.utils.convert_lora_safetensor_to_diffusers import convert_lora
 import pdb
@@ -110,7 +110,7 @@ class AnimateController:
             unet_additional_kwargs=OmegaConf.load(inference_config).unet_additional_kwargs
         )
         if is_xformers_available() and torch.cuda.is_available():
-            unet.enable_xformers_memory_efficient_attention()
+            safe_enable_xformers(unet, "unet")
 
         noise_scheduler_cls = scheduler_dict[sampler_dropdown]
         noise_scheduler_kwargs = OmegaConf.load(inference_config).noise_scheduler_kwargs

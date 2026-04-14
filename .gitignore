@@ -9,6 +9,7 @@ ossutil_output/
 
 scripts/*
 !scripts/animate.py
+!scripts/animate_location.py
 
 *.ipynb
 *.safetensors

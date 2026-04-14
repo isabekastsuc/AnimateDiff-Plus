@@ -13,8 +13,8 @@ from packaging import version
 from transformers import CLIPTextModel, CLIPTokenizer
 
 from diffusers.configuration_utils import FrozenDict
+from diffusers import DiffusionPipeline
 from diffusers.models import AutoencoderKL
-from diffusers.pipeline_utils import DiffusionPipeline
 from diffusers.schedulers import (
     DDIMScheduler,
     DPMSolverMultistepScheduler,

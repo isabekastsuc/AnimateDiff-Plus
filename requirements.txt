@@ -1,8 +1,7 @@
-torch==2.3.1
-torchvision==0.18.1
-diffusers==0.11.1
-transformers==4.25.1
-xformers==0.0.27
+torch==2.11.0
+torchvision==0.26.0
+diffusers==0.37.1
+transformers==5.5.4
 imageio==2.27.0
 imageio-ffmpeg==0.4.9
 decord==0.6.0
